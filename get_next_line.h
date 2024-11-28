@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:43:12 by ifounas           #+#    #+#             */
-/*   Updated: 2024/11/27 17:06:21 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/11/28 17:43:07 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 #include <fcntl.h>
+#include "../../finished/libft/libft.h"
 
 char	*get_next_line(int fd);
 size_t	ft_strlen_ult(char *s);
