@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:42:29 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/02 22:52:18 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/02 22:56:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /******************************************************************************/
 
@@ -22,14 +22,14 @@ char *is_new_line(char *s, char *c, int fd, size_t read_counter)
         read_counter = read(fd, c, BUFFER_SIZE);
     else
         return (s);
-    while (c[i] != '\n' || i < read_counter)
+    while (c[i] != '\n' && i < read_counter)
         i++;
     tmp = malloc(ft_strlen_ult(s) + 1);
     ft_strlcpy(tmp,s,ft_strlen_ult(s)+1);
     tmp2 = ft_strjoin(tmp, c);
     free(tmp);
     free(s);
-    printf("t%ct", c[i]);
+    printf("%zu t%ct",i, c[i]);
     if (c[i] != '\n')
         printf("AHAHAHAHA");
     return (tmp2);
