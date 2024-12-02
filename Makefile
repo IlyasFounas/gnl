@@ -1,7 +1,7 @@
 NAME    =   gnl.a
 SRC     =   get_next_line.c get_next_line_utils.c
 OBJ     =   $(SRC:.c=.o)
-CFLAGS  =   -Wall -Wextra -Werror -D BUFFER_SIZE=100
+CFLAGS  =   -Wall -Wextra -Werror -D BUFFER_SIZE=3
 CC      =   cc
 
 $(NAME): $(OBJ)
