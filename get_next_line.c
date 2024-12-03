@@ -1,67 +1,119 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:42:29 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/02 22:56:50 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/03 17:55:15 by ifounas          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *is_new_line(char *s, char *c, int fd, size_t read_counter)
+char *ft_realloc(char *tmp, char *c)
 {
-    char *tmp;
     char *tmp2;
-    size_t i = 0;
-    
-    if (ft_strlen_ult(s) == read_counter)
-        read_counter = read(fd, c, BUFFER_SIZE);
-    else
-        return (s);
-    while (c[i] != '\n' && i < read_counter)
-        i++;
-    tmp = malloc(ft_strlen_ult(s) + 1);
-    ft_strlcpy(tmp,s,ft_strlen_ult(s)+1);
-    tmp2 = ft_strjoin(tmp, c);
+
+    tmp2 = malloc(ft_strlen_ult(tmp) + ft_strlen_ult(c) +  1);
+    if (!tmp2)
+        return (NULL);
+    ft_strlcpy(tmp2, tmp, ft_strlen_ult(tmp) + 1);
     free(tmp);
-    free(s);
-    printf("%zu t%ct",i, c[i]);
-    if (c[i] != '\n')
-        printf("AHAHAHAHA");
     return (tmp2);
+}
+
+char *ft_static_str(char *c, size_t i, size_t j)
+{
+    char *s;
+    if (c[i+1] != '\0' && c[i+1] != '\n')
+    {
+        i++;
+        j = 0;
+        s = malloc(ft_strlen_ult(c+i)+1);
+        if (!s)
+            return (NULL);
+        while (c[i+j])
+        {
+            s[j] = c[i+j];
+            j++;
+        }
+        s[j] = '\0';
+    }
+    else
+        s = malloc(0);
+    return (s);
 }
 
 char	*get_next_line(int fd)
 {
-	static size_t	i;
-	static size_t	read_counter;
-    static char    c[BUFFER_SIZE];
-    char    *s;
-    char    *s_cpy;
+    char c[BUFFER_SIZE + 1];
+    char *tmp;
+    char *s_tmp;
+    static char *s;
+    size_t i = 0;
+    size_t j = 0;
+    size_t k = 0;
+    size_t r_c = 0;
     
-    if (i == read_counter)
+    r_c = read(fd, c, BUFFER_SIZE);
+    
+    if (s && s[0] != '\0')
     {
-        read_counter = read(fd, c, BUFFER_SIZE);
-        i = 0;
+        tmp = malloc(ft_strlen_ult(c) + ft_strlen_ult(s) + 1);
+        if (!tmp)
+            return (NULL);
+        while (s[k] && s[k] != '\n')
+        {
+            tmp[k] = s[k];
+            k++;
+        }
+        if (s[k] == '\n')
+            k++;
     }
-    s = malloc(read_counter +  1);
+    else
+    {
+        tmp = malloc(ft_strlen_ult(c) + 1);
+        if (!tmp)
+            return (NULL);
+    }
+    if (r_c == 0 )
+    {
+        if (!s && s[0] == '\0')
+            return (NULL);
+        
+        s_tmp = ft_substr(&s[ft_strlen_ult(s)]+1, 0, ft_strlen_ult(s));
+        free(s);
+        s = malloc(ft_strlen_ult(s_tmp)+1);
+        if (!s)
+            return (NULL);
+        ft_strlcpy(s, s_tmp, ft_strlen_ult(s_tmp)+1);
+        free(s_tmp);
+    }
+    while (c[i] != '\n' && i < r_c)
+    {
+        tmp[k + j + i] = c[i];
+        i++;
+        if (i == r_c && c[r_c - 1] != '\n')
+        {
+            r_c = read(fd, c, BUFFER_SIZE);
+            tmp = ft_realloc(tmp, c);
+            i = 0;
+            k = 0;
+            j = ft_strlen_ult(tmp);
+        }
+    }
+    tmp[k + j + i] = '\0';
     if (!s)
+        s = ft_static_str(c, i, j);
+    if (r_c == 0 && !tmp && tmp[0] != '\0')
         return (NULL);
-    ft_strlcpy(s, c, read_counter + 1);
-    i += ft_strlen_ult(s);
-    s_cpy = is_new_line(s, c , fd, read_counter);
-    return (s_cpy);
-    
-
-
-
-
-	/*
-    stqtic size_t   i;
+    return (tmp);
+}
+ 	/*
+     
+    static size_t   i;
     static size_t	read_counter = 0;
 	static char		c[BUFFER_SIZE];
 
@@ -128,6 +180,32 @@ char	*get_next_line(int fd)
 		}
         return (s);
 	}
-	return ("(NULL)"); */
+	return ("(NULL)"); 
     
-}
+}*/
+
+/* int	main(void)
+{
+	char *s;
+	int fd = open("text_simple.txt", O_RDONLY);
+	//int fd2 = open("test.txt", O_RDONLY);
+	int i;
+	
+ 	i = -1;
+	while (++i < 4)
+	{
+		s = get_next_line(fd);
+		printf("%s\n", s);
+		free(s);
+	}
+ 	printf("////////////////////////////////////////////////////////////////////////////////////\n");
+ 	i = -1;
+	while (++i < 59)
+	{
+		s = get_next_line(fd2);
+		printf("%s\n", s);
+		free(s);
+	}
+	close(fd);
+	//close(fd2);
+} */
