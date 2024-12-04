@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:38:00 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/03 17:55:37 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/04 11:06:14 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 
 int	main(void)
 {
+	int i = -1;
 	char *s;
-	//int fd = open("text_simple.txt", O_RDONLY);
-	int fd2 = open("test.txt", O_RDONLY);
-	int i;
-	
- 	/* i = -1;
+	int fd = open("text_simple.txt", O_RDONLY);
 	while (++i < 5)
 	{
 		s = get_next_line(fd);
 		printf("%s\n", s);
 		free(s);
 	}
+	close(fd);
+
+
  	printf("////////////////////////////////////////////////////////////////////////////////////\n");
- 	 */i = -1;
-	while (++i < 59)
+ 	
+	int j = -1;
+	char *s2;
+	int fd2 = open("test.txt", O_RDONLY);
+	while (++j < 59)
 	{
-		s = get_next_line(fd2);
-		printf("%s\n", s);
-		free(s);
+		s2 = get_next_line(fd2);
+		printf("%s\n", s2);
+		free(s2);
 	}
-	//close(fd);
 	close(fd2);
 }
