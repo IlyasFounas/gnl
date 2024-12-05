@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:03:06 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/03 17:07:14 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/05 17:55:34 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen_ult(char *s)
 	while (s[i] != '\0' && s[i] != '\n')
 		i++;
 	return (i);
-}
+}/* 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*dst;
@@ -35,7 +35,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ft_strlcpy(dst, s1, ft_strlen_ult((char *)s1) + 1);
 	ft_strlcat(dst, s2, ft_strlen_ult((char *)dst) + ft_strlen_ult((char *)s2) + 1);
 	return (dst);
-}
+} */
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	unsigned int	i;
