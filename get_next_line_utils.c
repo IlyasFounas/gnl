@@ -5,80 +5,159 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 17:03:06 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/06 10:33:42 by ifounas          ###   ########.fr       */
+/*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
+/*   Updated: 2024/12/06 15:20:39 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen_ult(char *s)
+t_list	*ft_lstnew(void *content)
 {
-	size_t i;
-    
-    i = 0;
-	if (s == NULL)
-		return (0);
-	while (s[i] != '\0' && s[i] != '\n')
-		i++;
-	return (i);
+	t_list	*new;
+
+	new = (t_list *)malloc(sizeof(t_list));
+	if (new == NULL)
+		return (NULL);
+	if (content == NULL)
+		new->content = NULL;
+	else
+		new->content = content;
+	new->next = NULL;
+	return (new);
 }
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+
+void	ft_lstadd_front(t_list **lst, t_list *new)
 {
-	unsigned int	i;
+	if (lst == NULL || new == NULL)
+		return ;
+	new->next = *lst;
+	*lst = new;
+}
+
+int	ft_lstsize(t_list *lst)
+{
+	int	i;
 
 	i = 0;
-	if (size > 0)
+	while (lst)
 	{
-		while (src[i] && i < size - 1)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	while (src[i])
+		lst = lst->next;
 		i++;
+	}
 	return (i);
 }
-size_t	ft_strlcat(char *dst, const char *src, size_t size)
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	/*t_list	*ptr;
+
+
+	printf("%s", (char *)lst->content);
+	 if (lst == NULL)
+		return (0); */
+	while (lst)
+	{
+		/* ptr = lst;
+		lst = lst->next; */
+		if (lst == NULL)
+			return (lst);
+		lst = lst->next;
+	}
+	return (NULL);
+}
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	if (*lst)
+	{
+
+/* 		printf("%s", (char *)new->content);
+ */		ft_lstlast(*lst);
+ 		(*lst)->next = new;
+		//printf("%s", (char *)(*lst)->content);
+	}
+	else
+		*lst = new;
+	//printf("%s", (char *)(*lst)->content);
+}
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (del == NULL || lst == NULL)
+		return ;
+	del(lst->content);
+	free(lst);
+}
+
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*ptr;
+
+	if (del == NULL)
+		return ;
+	ptr = *lst;
+	while (*lst)
+	{
+		*lst = (*lst)->next;
+		ft_lstdelone(ptr, del);
+		ptr = *lst;
+	}
+	*lst = NULL;
+}
+
+void	ft_lstiter(t_list *lst, void (*f)(void *))
+{
+	if (f == NULL)
+		return ;
+	while (lst)
+	{
+		f(lst->content);
+		lst = lst->next;
+	}
+}
+
+size_t	ft_strlen(const char *s)
 {
 	size_t	i;
-	size_t	len_dest;
 
-	len_dest = ft_strlen_ult(dst);
 	i = 0;
-	if (size <= len_dest)
-	{
-		return (ft_strlen_ult((char *)src) + size);
-	}
-	if (size > 0)
-	{
-		while (src[i] && i < size - 1 - len_dest)
-		{
-			dst[len_dest + i] = src[i];
-			i++;
-		}
-		dst[len_dest + i] = '\0';
-	}
-	return (ft_strlen_ult((char *)src) + len_dest);
+	while (s[i])
+		i++;
+	return (i);
 }
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	char	*dst;
 
-	if (s == NULL)
-		return (0);
-	if ((size_t)start >= ft_strlen_ult((char *)s) && s != NULL)
+void	ft_lstiter_print(t_list *lst)
+{
+	while (lst)
 	{
-		dst = malloc(1);
-		return (dst);
+		printf("%s", (char *)lst->content);
+		lst = lst->next;
 	}
-	if (len >= ft_strlen_ult((char *)s + start))
-		len = ft_strlen_ult((char *)s + start);
-	dst = malloc(len + 1);
-	if (dst == NULL)
-		return (0);
-	ft_strlcpy(dst, s + start, len + 1);
-	return (dst);
+}
+
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+{
+	t_list *ptr;
+	t_list *new_list;
+	void *ptr_tof;
+
+	new_list = NULL;
+	while (lst)
+	{
+		ptr_tof = f(lst->content);
+		if (ptr_tof == NULL)
+		{
+			ft_lstclear(&new_list, del);
+			return (0);
+		}
+		ptr = ft_lstnew(ptr_tof);
+		if (ptr == NULL)
+		{
+			ft_lstclear(&new_list, del);
+			del(ptr_tof);
+			return (0);
+		}
+		ft_lstadd_back(&new_list, ptr);
+		lst = lst->next;
+	}
+	return (new_list);
 }
