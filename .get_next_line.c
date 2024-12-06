@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:42:29 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/05 18:02:33 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/06 10:48:25 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,34 +17,28 @@ char	*ft_realloc(char *tmp, char *c)
 {
 	char	*tmp2;
 
-	tmp2 = malloc(ft_strlen_ult(tmp) + ft_strlen_ult(c) + 1);
+	tmp2 = malloc((ft_strlen_ult(tmp)) + (ft_strlen_ult(c) + 1));
 	if (!tmp2)
 		return (NULL);
 	ft_strlcpy(tmp2, tmp, ft_strlen_ult(tmp) + 1);
 	free(tmp);
 	return (tmp2);
 }
-
 //like strjoin for the static string
 char	*ft_str_tmp(char *s, char *c, int yes_or_no)
 {
 	char	*s_tmp;
-
+	
 	if (yes_or_no == 1)
 	{
-		s_tmp = malloc(ft_strlen_ult(s) + ft_strlen_ult(c));
-		ft_strlcpy(s_tmp, &s[ft_strlen_ult(s)] + 1, ft_strlen_ult(s) + 1);
+		s_tmp = malloc(ft_strlen_ult(s) + ft_strlen_ult(c) + 1);
+		ft_strlcpy(s_tmp, &s[ft_strlen_ult(s) + 1] + 1, ft_strlen_ult(s) + 1);
 		ft_strlcat(s_tmp, c, ft_strlen_ult(s) + ft_strlen_ult(c));
-    }
+	}
 	else
-		s_tmp = ft_substr(&s[ft_strlen_ult(s)] + 1, 0, ft_strlen_ult(s));
-	free(s);
-	s = malloc(ft_strlen_ult(s_tmp) + 1);
-	if (!s)
-		return (NULL);
-	ft_strlcpy(s, s_tmp, ft_strlen_ult(s_tmp) + 1);
-	free(s_tmp);
-	return (s);
+		s_tmp = ft_substr(&s[ft_strlen_ult(s) + 1] + 1, 0, ft_strlen_ult(s) + 1);
+	printf("s_tmp|%s|", s_tmp);
+	return (s_tmp);
 }
 
 //This function is endless ? 23 31 ... 30000
@@ -70,7 +64,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (s && s[0] != '\0')
 	{
-		tmp = malloc(ft_strlen_ult(c) + ft_strlen_ult(s) + 1);
+		tmp = malloc(ft_strlen_ult(c) + ft_strlen_ult(s) + 2);
 		if (!tmp)
 			return (NULL);
 		while (s[k] && s[k] != '\n')
@@ -127,31 +121,21 @@ char	*get_next_line(int fd)
 		{
 			tmp[k + j + i] = '\0';
 			r_c = read(fd, c, BUFFER_SIZE);
+			c[r_c] = '\0';
 			tmp = ft_realloc(tmp, c);
 			i = 0;
 			k = 0;
 			j = ft_strlen_ult(tmp);
 		}
-		if (c[i] == '\n')
+		if (c[i - 1] == '\n')
 		{
-			i++;
-			k = 0;
-			s = malloc(r_c - i + 1);
-			if (!s)
-			{
-				free(tmp);
-				return (NULL);
-			}
-			while (k <= r_c - i)
-			{
-				s[k] = c[i + k];
-				k++;
-			}
-			s[k] = '\0';
-			i += k;
+			s = ft_str_tmp(c, NULL, 0);
+			printf("c_str|%s|\n", s);
+			i += ft_strlen_ult(s);
 			break ;
 		}
 	}
-	tmp[k + j + i] = '\0';
+	tmp[i + j + k] = '\0';
+
 	return (tmp);
 }

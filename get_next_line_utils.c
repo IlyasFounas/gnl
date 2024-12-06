@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:03:06 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/05 17:55:34 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/06 10:33:42 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,7 @@ size_t	ft_strlen_ult(char *s)
 	while (s[i] != '\0' && s[i] != '\n')
 		i++;
 	return (i);
-}/* 
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	char	*dst;
-
-	if (s1 == NULL || s2 == NULL)
-		return (0);
-	dst = malloc((ft_strlen_ult((char *)s1) + ft_strlen_ult((char *)s2) + 1) * sizeof(char));
-	if (dst == NULL)
-		return (0);
-	ft_strlcpy(dst, s1, ft_strlen_ult((char *)s1) + 1);
-	ft_strlcat(dst, s2, ft_strlen_ult((char *)dst) + ft_strlen_ult((char *)s2) + 1);
-	return (dst);
-} */
+}
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 {
 	unsigned int	i;
