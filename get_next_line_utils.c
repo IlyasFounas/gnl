@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/06 15:20:39 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/06 23:34:46 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
 
@@ -50,35 +50,31 @@ int	ft_lstsize(t_list *lst)
 
 t_list	*ft_lstlast(t_list *lst)
 {
-	/*t_list	*ptr;
+	t_list	*ptr;
 
-
-	printf("%s", (char *)lst->content);
-	 if (lst == NULL)
-		return (0); */
+	if (lst == NULL)
+		return (0);
 	while (lst)
 	{
-		/* ptr = lst;
-		lst = lst->next; */
-		if (lst == NULL)
-			return (lst);
+		
+		ptr = lst;
 		lst = lst->next;
 	}
-	return (NULL);
+	return (ptr);
 }
 void	ft_lstadd_back(t_list **lst, t_list *new)
-{
+{ 
+	t_list	*last;
+	
+	if (!lst || !new)
+		return ;
 	if (*lst)
 	{
-
-/* 		printf("%s", (char *)new->content);
- */		ft_lstlast(*lst);
- 		(*lst)->next = new;
-		//printf("%s", (char *)(*lst)->content);
+		last = ft_lstlast(*lst);
+		last->next = new;
 	}
 	else
 		*lst = new;
-	//printf("%s", (char *)(*lst)->content);
 }
 void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
@@ -160,4 +156,23 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		lst = lst->next;
 	}
 	return (new_list);
+}
+
+size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (size > 0)
+	{
+		while (src[i] && i < size - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	while (src[i])
+		i++;
+	return (i);
 }
