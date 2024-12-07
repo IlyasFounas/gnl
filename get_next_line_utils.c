@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/06 23:34:46 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/07 18:19:15 by ifounas          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
@@ -35,19 +35,6 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 	*lst = new;
 }
 
-int	ft_lstsize(t_list *lst)
-{
-	int	i;
-
-	i = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		i++;
-	}
-	return (i);
-}
-
 t_list	*ft_lstlast(t_list *lst)
 {
 	t_list	*ptr;
@@ -56,16 +43,15 @@ t_list	*ft_lstlast(t_list *lst)
 		return (0);
 	while (lst)
 	{
-		
 		ptr = lst;
 		lst = lst->next;
 	}
 	return (ptr);
 }
 void	ft_lstadd_back(t_list **lst, t_list *new)
-{ 
+{
 	t_list	*last;
-	
+
 	if (!lst || !new)
 		return ;
 	if (*lst)
@@ -76,86 +62,17 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 	else
 		*lst = new;
 }
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
-{
-	if (del == NULL || lst == NULL)
-		return ;
-	del(lst->content);
-	free(lst);
-}
-
-void	ft_lstclear(t_list **lst, void (*del)(void *))
-{
-	t_list	*ptr;
-
-	if (del == NULL)
-		return ;
-	ptr = *lst;
-	while (*lst)
-	{
-		*lst = (*lst)->next;
-		ft_lstdelone(ptr, del);
-		ptr = *lst;
-	}
-	*lst = NULL;
-}
-
-void	ft_lstiter(t_list *lst, void (*f)(void *))
-{
-	if (f == NULL)
-		return ;
-	while (lst)
-	{
-		f(lst->content);
-		lst = lst->next;
-	}
-}
 
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
-}
-
-void	ft_lstiter_print(t_list *lst)
-{
-	while (lst)
-	{
-		printf("%s", (char *)lst->content);
-		lst = lst->next;
-	}
-}
-
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{
-	t_list *ptr;
-	t_list *new_list;
-	void *ptr_tof;
-
-	new_list = NULL;
-	while (lst)
-	{
-		ptr_tof = f(lst->content);
-		if (ptr_tof == NULL)
-		{
-			ft_lstclear(&new_list, del);
-			return (0);
-		}
-		ptr = ft_lstnew(ptr_tof);
-		if (ptr == NULL)
-		{
-			ft_lstclear(&new_list, del);
-			del(ptr_tof);
-			return (0);
-		}
-		ft_lstadd_back(&new_list, ptr);
-		lst = lst->next;
-	}
-	return (new_list);
 }
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t size)
@@ -175,4 +92,60 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	while (src[i])
 		i++;
 	return (i);
+}
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
+{
+	size_t	i;
+	size_t	len_dest;
+
+	len_dest = ft_strlen(dst);
+	i = 0;
+	if (size <= len_dest)
+	{
+		return (ft_strlen((char *)src) + size);
+	}
+	if (size > 0)
+	{
+		while (src[i] && i < size - 1 - len_dest)
+		{
+			dst[len_dest + i] = src[i];
+			i++;
+		}
+		dst[len_dest + i] = '\0';
+	}
+	return (ft_strlen((char *)src) + len_dest);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*cc;
+	size_t	s_len;
+	size_t	i;
+
+	s_len = ft_strlen(s);
+	i = 0;
+	cc = malloc(s_len + 1);
+	if (cc == NULL)
+		return (0);
+	while (i < s_len)
+	{
+		cc[i] = s[i];
+		i++;
+	}
+	cc[i] = '\0';
+	return (cc);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	char	*dst;
+
+	if (s1 == NULL || s2 == NULL)
+		return (0);
+	dst = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (dst == NULL)
+		return (0);
+	ft_strlcpy(dst, s1, ft_strlen(s1) + 1);
+	ft_strlcat(dst, s2, ft_strlen(dst) + ft_strlen(s2) + 1);
+	return (dst);
 }
