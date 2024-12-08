@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:26:57 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/07 18:25:38 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/08 11:13:44 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
 
@@ -106,7 +106,7 @@ char	*get_next_line(int fd)
 	else
 		return (ft_strjoin_structs(fd, ptr_to_first, ptr));
 }
-/*
+
 int	main(void)
 {
 	int		i;
@@ -115,7 +115,7 @@ int	main(void)
 
 	i = -1;
 	fd = open("text_simple.txt", O_RDONLY);
-	while (++i < 10)
+	while (++i < 30)
 	{
 		s = get_next_line(fd);
 		if (s)
@@ -123,6 +123,8 @@ int	main(void)
 			printf("%s", s);
 			free(s);
 		}
+		else
+			printf("%s", s);
 	}
 	close(fd);
-}*/
+}
