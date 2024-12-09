@@ -1,121 +1,115 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/06 11:26:57 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/08 11:13:44 by marvin           ###   ########.fr       */
+/*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
+/*   Updated: 2024/12/09 18:15:25 by ifounas          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
-// read in the file
-static ssize_t	ft_readline(int fd, t_list *ptr)
+int	ft_strrchr(const char *s, int c)
 {
-	ssize_t	read_count;
-	t_list	*ptr_tmp;
-	char	buf[BUFFER_SIZE + 1];
-	char	*tmp_malloc;
+	int	i;
+	int	mark;
 
-	read_count = 1;
-	read_count = read(fd, buf, BUFFER_SIZE);
-	if (read_count <= 0)
-		return (read_count);
-	buf[read_count] = '\0';
-	tmp_malloc = malloc(read_count + 1);
-	if (!tmp_malloc)
+	i = 0;
+	mark = 0;
+	c = (char)c;
+	if (s == NULL)
 		return (0);
-	ft_strlcpy(tmp_malloc, buf, read_count + 1);
-	ptr_tmp = ft_lstnew((void *)tmp_malloc);
-	if (!ptr_tmp)
-		return (-1);
-	ft_lstadd_back(&ptr, ptr_tmp);
-	//free(tmp_malloc);
-	return (read_count);
-}
-
-// read in the file while the line is finished
-static char	*ft_readline_while(int fd, t_list *ptr)
-{
-	ssize_t	read_count;
-
-	while (*(char *)ptr->content + BUFFER_SIZE - 1 != '\n'
-		&& *(char *)ptr->content + BUFFER_SIZE - 1 != '\0')
+	while (s[i])
 	{
-		read_count = ft_readline(fd, ptr);
-		if (read_count <= 0)
-			return (NULL);
-		ptr = ptr->next;
+		if (s[i] == c)
+			mark = i;
+		i++;
 	}
-	return ((char *)ptr->content);
+	if (s[i] == c && s[i] == '\0')
+		return (0);
+	else if (mark > 0 || s[mark] == c)
+		return (1);
+	return (0);
 }
 
-// Join all the lists of ptr and return a char*
-char	*ft_strjoin_structs(int fd, t_list *ptr_to_first, t_list *ptr)
+char	*ft_get_rest(char *buf)
 {
-	t_list	*current;
+	char	*res;
+	
+	res = ft_substr(buf, ft_strlen(buf, '\n'), ft_strlen(buf, 0));
+	free(buf);
+	return (res);
+}
+
+char	*ft_readline(int fd, char *buf)
+{
+	ssize_t	read_c;
 	char	*line;
-	char	*tmp;
 
-	ft_readline_while(fd, ptr);
-	current = ptr_to_first->next;
+	read_c = -1;
 	line = NULL;
-	current = current->next;
-	while (current)
+	//printf("|%s|\n", buf);
+	if (buf && buf[0] != '\0')
 	{
-		if (current->content)
-		{
-			if (!line)
-				line = ft_strdup((char *)current->content);
-			else
-			{
-				tmp = ft_strjoin(line, (char *)current->content);
-				free(line);
-				line = tmp;
-			}
-		}
-		current = current->next;
+		printf("|%s|", line);
+		line = ft_strjoin(line, buf);
 	}
-	ptr_to_first->next = current;
+	if (ft_strrchr(line, '\n') == 1)
+	{
+		return (line);
+	}
+	while (read_c != 0)
+	{
+		read_c = read(fd, buf, BUFFER_SIZE);
+		if (read_c < 0)
+		{
+			free(line);
+			return (NULL);
+		}
+		buf[read_c] = '\0';
+		line = ft_strjoin(line, buf);
+		if (ft_strrchr(line, '\n') == 1)
+			break ;
+	}
 	return (line);
 }
 
-// return the lst
 char	*get_next_line(int fd)
 {
-	static t_list	*ptr_to_first;
-	t_list			*ptr;
-	ssize_t			read_count;
+	static char	*buf;
+	char	*line;
+	// int		i;
 
-	if (!ptr_to_first)
-		ptr_to_first = ft_lstnew(NULL);
-	ptr = ft_lstnew(NULL);
-	if (!ptr)
-		return (NULL);
-	ft_lstadd_back(&ptr_to_first, ptr);
-	read_count = ft_readline(fd, ptr);
-	if (read_count <= 0)
-		return (NULL);
-	ptr = ft_lstlast(ptr);
-	if (*(char *)ptr->content + BUFFER_SIZE - 1 == '\n' || *(char *)ptr->content
-		+ BUFFER_SIZE - 1 == '\0')
-		return (ptr->content);
-	else
-		return (ft_strjoin_structs(fd, ptr_to_first, ptr));
+	// i = 0;
+	if (!buf)
+		buf = malloc(BUFFER_SIZE + 1);
+	line = ft_readline(fd, buf);
+	buf = ft_get_rest(buf);
+	// while (res[i])
+	// {
+	// 	buf[i] = res[i];
+	// 	i++;
+	// }
+	// while (i < BUFFER_SIZE)
+	// {
+	// 	buf[i] = '\0';
+	// 	i++;
+	// }
+	return (line);
 }
 
 int	main(void)
 {
-	int		i;
-	char	*s;
-	int		fd;
+	int i;
+	char *s;
+	int fd;
 
-	i = -1;
+	i = 0;
 	fd = open("text_simple.txt", O_RDONLY);
-	while (++i < 30)
+	while (i < 5)
 	{
 		s = get_next_line(fd);
 		if (s)
@@ -124,7 +118,8 @@ int	main(void)
 			free(s);
 		}
 		else
-			printf("%s", s);
+			printf("X%sX", s);
+		i++;
 	}
 	close(fd);
 }
