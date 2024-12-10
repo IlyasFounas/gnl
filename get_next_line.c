@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/10 13:01:01 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/10 17:46:55 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,9 @@ char	*ft_get_rest(char *buf)
 	char	*res;
 
 	if (buf && buf[0] == '\0')
-	{
-		// free(buf);
 		return (NULL);
-	}
 	res = ft_substr(buf, ft_strlen(buf, '\n'), ft_strlen(buf + ft_strlen(buf,
 					'\n'), 0));
-	// free(buf);
 	return (res);
 }
 
@@ -58,7 +54,11 @@ char	*ft_readline(int fd, char *buf)
 	read_c = -1;
 	line = NULL;
 	if (buf && buf[0] != '\0')
+	{
 		line = ft_strjoin(line, buf);
+		if (!line)
+			return (NULL);
+	}
 	if (ft_strrchr(line, '\n') == 1)
 		return (line);
 	while (read_c != 0)
@@ -67,13 +67,12 @@ char	*ft_readline(int fd, char *buf)
 		if (read_c == 0)
 			return (line);
 		if (read_c < 0)
-		{
-			free(line);
-			return (NULL);
-		}
+			return (free(line), NULL);
 		buf[read_c] = '\0';
 		line = ft_strjoin(line, buf);
-		if (ft_strrchr(line, '\n') == 1 )
+		if (!line)
+			return (NULL);
+		if (ft_strrchr(line, '\n') == 1)
 			break ;
 	}
 	if (read_c == 0)
@@ -90,7 +89,14 @@ char	*get_next_line(int fd)
 
 	i = 0;
 	line = ft_readline(fd, buf);
+	/* if (!line)
+		return (line); */
 	res = ft_get_rest(buf);
+	if (!res)
+	{
+		free(line);
+		return (NULL);
+	}
 	if (res)
 	{
 		while (res[i] != '\0')
