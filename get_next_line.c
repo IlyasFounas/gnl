@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/10 17:46:55 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:29:34 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ char	*ft_readline(int fd, char *buf)
 	{
 		line = ft_strjoin(line, buf);
 		if (!line)
+		{
 			return (NULL);
+		}
 	}
 	if (ft_strrchr(line, '\n') == 1)
 		return (line);
@@ -70,9 +72,7 @@ char	*ft_readline(int fd, char *buf)
 			return (free(line), NULL);
 		buf[read_c] = '\0';
 		line = ft_strjoin(line, buf);
-		if (!line)
-			return (NULL);
-		if (ft_strrchr(line, '\n') == 1)
+		if (ft_strrchr(line, '\n') == 1 || !line)
 			break ;
 	}
 	if (read_c == 0)
@@ -80,36 +80,33 @@ char	*ft_readline(int fd, char *buf)
 	return (line);
 }
 
+void	ft_concat_buffer(char *buf, char *res)
+{
+	int			i;
+	
+	i = 0;
+	while (res[i] != '\0')
+	{
+		buf[i] = res[i];
+		i++;
+	}
+	while (i < BUFFER_SIZE)
+	{
+		buf[i] = '\0';
+		i++;
+	}
+	free(res);
+}
+
 char	*get_next_line(int fd)
 {
 	char		*res;
-	int			i;
 	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
 
-	i = 0;
 	line = ft_readline(fd, buf);
-	/* if (!line)
-		return (line); */
 	res = ft_get_rest(buf);
-	if (!res)
-	{
-		free(line);
-		return (NULL);
-	}
 	if (res)
-	{
-		while (res[i] != '\0')
-		{
-			buf[i] = res[i];
-			i++;
-		}
-		while (i < BUFFER_SIZE)
-		{
-			buf[i] = '\0';
-			i++;
-		}
-		free(res);
-	}
+		ft_concat_buffer(buf, res);
 	return (line);
 }

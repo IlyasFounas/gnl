@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/10 17:50:58 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/10 18:27:36 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*dst;
 
-	if (s2 == NULL)
+	if (!s2)
 		return (NULL);
 	dst = malloc((ft_strlen(s1, 0) + ft_strlen(s2, '\n') + 1) * sizeof(char));
 	if (!dst)
@@ -96,7 +96,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char	*dst;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
 	if ((size_t)start >= ft_strlen(s, 0) && s != NULL)
 	{
@@ -107,7 +107,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (len >= ft_strlen(s + start, 0))
 		len = ft_strlen(s + start, 0);
 	dst = malloc(len + 1);
-	if (dst == NULL)
+	if (!dst)
 		return (NULL);
 	ft_strlcpy(dst, s + start, len + 1);
 	return (dst);
