@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/09 18:15:25 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/10 13:01:01 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,15 @@ int	ft_strrchr(const char *s, int c)
 char	*ft_get_rest(char *buf)
 {
 	char	*res;
-	
-	res = ft_substr(buf, ft_strlen(buf, '\n'), ft_strlen(buf, 0));
-	free(buf);
+
+	if (buf && buf[0] == '\0')
+	{
+		// free(buf);
+		return (NULL);
+	}
+	res = ft_substr(buf, ft_strlen(buf, '\n'), ft_strlen(buf + ft_strlen(buf,
+					'\n'), 0));
+	// free(buf);
 	return (res);
 }
 
@@ -51,19 +57,15 @@ char	*ft_readline(int fd, char *buf)
 
 	read_c = -1;
 	line = NULL;
-	//printf("|%s|\n", buf);
 	if (buf && buf[0] != '\0')
-	{
-		printf("|%s|", line);
 		line = ft_strjoin(line, buf);
-	}
 	if (ft_strrchr(line, '\n') == 1)
-	{
 		return (line);
-	}
 	while (read_c != 0)
 	{
 		read_c = read(fd, buf, BUFFER_SIZE);
+		if (read_c == 0)
+			return (line);
 		if (read_c < 0)
 		{
 			free(line);
@@ -71,55 +73,37 @@ char	*ft_readline(int fd, char *buf)
 		}
 		buf[read_c] = '\0';
 		line = ft_strjoin(line, buf);
-		if (ft_strrchr(line, '\n') == 1)
+		if (ft_strrchr(line, '\n') == 1 )
 			break ;
 	}
+	if (read_c == 0)
+		return (free(line), NULL);
 	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
-	char	*line;
-	// int		i;
-
-	// i = 0;
-	if (!buf)
-		buf = malloc(BUFFER_SIZE + 1);
-	line = ft_readline(fd, buf);
-	buf = ft_get_rest(buf);
-	// while (res[i])
-	// {
-	// 	buf[i] = res[i];
-	// 	i++;
-	// }
-	// while (i < BUFFER_SIZE)
-	// {
-	// 	buf[i] = '\0';
-	// 	i++;
-	// }
-	return (line);
-}
-
-int	main(void)
-{
-	int i;
-	char *s;
-	int fd;
+	char		*res;
+	int			i;
+	static char	buf[BUFFER_SIZE + 1];
+	char		*line;
 
 	i = 0;
-	fd = open("text_simple.txt", O_RDONLY);
-	while (i < 5)
+	line = ft_readline(fd, buf);
+	res = ft_get_rest(buf);
+	if (res)
 	{
-		s = get_next_line(fd);
-		if (s)
+		while (res[i] != '\0')
 		{
-			printf("%s", s);
-			free(s);
+			buf[i] = res[i];
+			i++;
 		}
-		else
-			printf("X%sX", s);
-		i++;
+		while (i < BUFFER_SIZE)
+		{
+			buf[i] = '\0';
+			i++;
+		}
+		free(res);
 	}
-	close(fd);
+	return (line);
 }

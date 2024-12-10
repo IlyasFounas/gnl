@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/09 18:19:47 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/10 13:09:43 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 
 	i = 0;
 	if (src == NULL)
+	{
+		dst[0] = '\0';
 		return (0);
+	}
 	if (size > 0)
 	{
 		while (src[i] && i < size - 1)
@@ -47,7 +50,6 @@ size_t	ft_strlen(const char *s, int c)
 	return (i);
 }
 
-
 size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
 	size_t	i;
@@ -62,7 +64,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	if (size > 0)
 	{
 		while (src[i] && i < size - 1 - len_dest && src[i] != '\n')
-		{	
+		{
 			dst[len_dest + i] = src[i];
 			i++;
 		}
@@ -76,7 +78,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	return (ft_strlen((char *)src, 0) + len_dest);
 }
 
-
 char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*dst;
@@ -86,8 +87,6 @@ char	*ft_strjoin(char *s1, char const *s2)
 	dst = malloc((ft_strlen(s1, 0) + ft_strlen(s2, '\n') + 1) * sizeof(char));
 	if (dst == NULL)
 		return (0);
-	
-	
 	ft_strlcpy(dst, s1, ft_strlen(s1, 0) + 1);
 	ft_strlcat(dst, s2, ft_strlen(dst, 0) + ft_strlen(s2, '\n') + 1);
 	free(s1);
@@ -99,10 +98,13 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*dst;
 
 	if (s == NULL)
+	{
 		return (0);
+	}
 	if ((size_t)start >= ft_strlen(s, 0) && s != NULL)
 	{
 		dst = malloc(1);
+		dst[0] = '\0';
 		return (dst);
 	}
 	if (len >= ft_strlen(s + start, 0))
@@ -111,6 +113,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (dst == NULL)
 		return (0);
 	ft_strlcpy(dst, s + start, len + 1);
-	printf("|%s|\n", dst);
 	return (dst);
 }
