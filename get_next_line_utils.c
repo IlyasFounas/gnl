@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/11 18:53:53 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/11 22:46:10 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
 
@@ -90,7 +90,6 @@ char	*ft_strjoin(char *s1, char const *s2)
 	return (free(s1), dst);
 }
 
-//char	*ft_substr(char const *s, unsigned int start, size_t len)
 char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*dst;
@@ -101,7 +100,7 @@ char	*ft_substr(char *s, unsigned int start, size_t len)
 	{
 		dst = malloc(1);
 		if (!dst)
-			return (NULL);
+			return (dst);
 		dst[0] = '\0';
 		return (dst);
 	}

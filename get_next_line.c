@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/11 18:52:27 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/11 22:46:02 by marvin           ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "get_next_line.h"
 
@@ -43,8 +43,6 @@ static char	*ft_get_rest(char *buf)
 		return (NULL);
 	res = ft_substr(buf, ft_strlen(buf, '\n'), ft_strlen(buf + ft_strlen(buf,
 					'\n'), 0));
-	if (!res)
-		return (free(res), NULL);
 	return (res);
 }
 
@@ -98,12 +96,10 @@ char	*get_next_line(int fd)
 	char		*line;
 
 	line = ft_readline(fd, buf);
-	// if (!line)
-	// 	return (free(line), NULL);
 	res = ft_get_rest(buf);
 	if (res)
 		ft_concat_buffer(buf, res);
 	else
-		free(res);
+		return (free(line), free(res), NULL);
 	return (line);
 }
