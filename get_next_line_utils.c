@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 11:25:28 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/10 18:27:36 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/11 18:53:53 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ size_t	ft_strlen(const char *s, int c)
 		return (0);
 	while (s[i] && s[i] != c)
 		i++;
-	if (s[i] == c && s[i] != '\0')
+	if (s[i] != '\0' && s[i] == c)
 		i++;
 	return (i);
 }
@@ -58,9 +58,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t size)
 	len_dest = ft_strlen(dst, 0);
 	i = 0;
 	if (size <= len_dest)
-	{
 		return (ft_strlen((char *)src, 0) + size);
-	}
 	if (size > 0)
 	{
 		while (src[i] && i < size - 1 - len_dest && src[i] != '\n')
@@ -83,7 +81,7 @@ char	*ft_strjoin(char *s1, char const *s2)
 	char	*dst;
 
 	if (!s2)
-		return (NULL);
+		return (free(s1), NULL);
 	dst = malloc((ft_strlen(s1, 0) + ft_strlen(s2, '\n') + 1) * sizeof(char));
 	if (!dst)
 		return (free(s1), NULL);
@@ -92,7 +90,8 @@ char	*ft_strjoin(char *s1, char const *s2)
 	return (free(s1), dst);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+//char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char *s, unsigned int start, size_t len)
 {
 	char	*dst;
 
@@ -101,6 +100,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if ((size_t)start >= ft_strlen(s, 0) && s != NULL)
 	{
 		dst = malloc(1);
+		if (!dst)
+			return (NULL);
 		dst[0] = '\0';
 		return (dst);
 	}
@@ -112,3 +113,5 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ft_strlcpy(dst, s + start, len + 1);
 	return (dst);
 }
+
+
