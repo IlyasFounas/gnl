@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/12 10:52:59 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/12 14:22:28 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*get_next_line(int fd)
 	static char	buf[BUFFER_SIZE + 1] = "";
 	char		*line;
 
-	if (BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	line = ft_readline(fd, buf);
 	res = ft_get_rest(buf);
