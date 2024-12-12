@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:38:00 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/11 18:14:39 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/12 10:32:26 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	main(void)
 	int		fd;
 
 	i = 0;
-	fd = open("text_simple.txt", O_RDONLY);
+	fd = open("test.txt", O_RDONLY);
 	s = get_next_line(fd);
-	while (i < 3)
+	while (i < 60)
 	{
 		
 		printf("%s", s);

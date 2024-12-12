@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/11 22:46:02 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/12 10:52:59 by ifounas          ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "get_next_line.h"
 
@@ -92,9 +92,11 @@ static void	ft_concat_buffer(char *buf, char *res)
 char	*get_next_line(int fd)
 {
 	char		*res;
-	static char	buf[BUFFER_SIZE + 1];
+	static char	buf[BUFFER_SIZE + 1] = "";
 	char		*line;
 
+	if (BUFFER_SIZE <= 0)
+		return (NULL);
 	line = ft_readline(fd, buf);
 	res = ft_get_rest(buf);
 	if (res)
