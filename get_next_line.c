@@ -6,7 +6,7 @@
 /*   By: ifounas <ifounas@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:06:05 by ifounas           #+#    #+#             */
-/*   Updated: 2024/12/12 14:22:28 by ifounas          ###   ########.fr       */
+/*   Updated: 2024/12/12 15:11:59 by ifounas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static char	*ft_get_rest(char *buf)
 	return (res);
 }
 
-
 static char	*ft_readline(int fd, char *buf)
 {
 	ssize_t	read_c;
@@ -78,8 +77,8 @@ static char	*ft_readline(int fd, char *buf)
 static void	ft_concat_buffer(char *buf, char *res)
 {
 	int	i;
+
 	i = 0;
-	
 	while (res[i] != '\0')
 	{
 		buf[i] = res[i];
